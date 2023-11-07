@@ -141,7 +141,7 @@ class GrayscaleImageTest {
         assertEquals(squared, expected);
     }
 
-    //Test that the square that is already even on all sides doesn't get cropped
+    //Test that the square that is already even on all sides, doesn't get cropped
     @Test
     void squarifiedSmallSquare(){
         var squared = smallSquare.squarified();

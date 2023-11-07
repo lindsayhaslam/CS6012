@@ -82,9 +82,10 @@ public class GrayscaleImage {
 
     //Checks if coordinates are within the image width/height
     //Image data at the input coordinates are returned.
+    //Swapped because it is swapped in the tests
     public double getPixel(int x, int y) {
 
-        if (x < 0 || x >= imageData.length || y < 0 || y >= imageData[0].length) {
+        if (y < 0 || y >= imageData.length || x < 0 || x >= imageData[0].length) {
             throw new IllegalArgumentException("Coordinates (x, y) are not within the image width/height.");
         }
         double pixel = imageData[y][x];
@@ -198,8 +199,8 @@ public class GrayscaleImage {
 
         GrayscaleImage croppedImage = new GrayscaleImage(new double[height][width]);
 
-        for (var row = 0; row < startRow; row++) {
-            for (var col = 0; col < startCol; col++) {
+        for (var row = 0; row < height; row++) {
+            for (var col = 0; col < width; col++) {
                 croppedImage.setPixel(col, row, imageData[startRow + row][startCol + col]);
             }
         }
@@ -209,7 +210,7 @@ public class GrayscaleImage {
     //Set numRows and numCols
     //If the image is already square, return it.
     //Find the lowest number between numRows and numCols and store it in newSize.
-    //Create dan array of doubles called squaredImage and store the newSize in both x and y coordinates.
+    //Create an array of doubles called squaredImage and store the newSize in both x and y coordinates.
     //Find the difference of numRows and newSize, divide it by 2. Same thing for numCols.
     //Nested for-loops that iterated over all rows and columns, taking into account the removal of rows and columns
     //from the top and left to create the square image.
