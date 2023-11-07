@@ -80,17 +80,8 @@ public class GrayscaleImage {
         ImageIO.write(outputImage, "png", filename);
     }
 
-    ///Methods to be filled in by students below
-
-    /**
-     * Get the pixel brightness value at the specified coordinates
-     * (0,0) is the top left corner of the image, (width -1, height -1) is the bottom right corner
-     *
-     * @param x horizontal position, increases left to right
-     * @param y vertical position, **increases top to bottom**
-     * @return the brightness value at the specified coordinates
-     * @throws IllegalArgumentException if x, y are not within the image width/height
-     */
+    //Checks if coordinates are within the image width/height
+    //Image data at the input coordinates are returned.
     public double getPixel(int x, int y) {
 
         if (x < 0 || x >= imageData.length || y < 0 || y >= imageData[0].length) {
@@ -100,13 +91,8 @@ public class GrayscaleImage {
         return pixel;
     }
 
-    /**
-     * Two images are equal if they have the same size and each corresponding pixel
-     * in the two images is exactly equal
-     *
-     * @param other
-     * @return
-     */
+    //Checks if two images are equal in size (rows and columns)
+    //Nested for-loop for sifting through the data of each pixel
     @Override
     public boolean equals(Object other) {
         if (!(other instanceof GrayscaleImage)) {
@@ -128,12 +114,11 @@ public class GrayscaleImage {
         return true;
     }
 
-
-    /**
-     * Computes the average of all values in image data
-     *
-     * @return the average of the imageData array
-     */
+    //Initialize totalBrightness to zero
+    //Nested for-loop to sift through both rows and columns, concatenating to totalBrightness as you go.
+    //Find totalPixels by multiplying rows by columns
+    //Divide totalBrightness by totalPixels
+    //Return
     public double averageBrightness() {
         double totalBrightness = 0.0;
         for (var row = 0; row < imageData.length; row++) {
@@ -146,18 +131,20 @@ public class GrayscaleImage {
     return average;
 }
 
-    /**
-     * Return a new GrayScale image where the average new average brightness is 127
-     * To do this, uniformly scale each pixel (ie, multiply each imageData entry by the same value)
-     * Due to rounding, the new average brightness will not be 127 exactly, but should be very close
-     * The original image should not be modified
-     * @return a GrayScale image with pixel data uniformly rescaled so that its averageBrightness() is 127
-     */
 
-   //Helper function
+   //Helper function to be used in normalized, mirrored, and cropped.
+   //Inserts data input into the coordinates input
     public void setPixel (int x, int y, double data){
         imageData[y][x] = data;
     }
+
+    //Get the scale by dividing 127 by averageBrightness.
+    //Store rows and columns into variables.
+    //Check if the averageBrightness is 0, throw an exception.
+    //Create a new Grayscale Image to store new normalized image.
+    //Nested for-loops to sift through all columns and rows.
+    //Store original value, then multiple originalValue by scale, store in normalizedValue.
+    //Call setPixel and store normalizedValue at set coordinates into normalizedImage.
     public GrayscaleImage normalized() {
         double scale = 127 / averageBrightness();
         int numRows = imageData.length;
@@ -180,13 +167,10 @@ public class GrayscaleImage {
             return normalizedImage;
     }
 
-
-        /**
-         * Returns a new grayscale image that has been "mirrored" across the y-axis
-         * In other words, each row of the image should be reversed
-         * The original image should be unchanged
-         * @return a new GrayscaleImage that is a mirrored version of the this
-         */
+    //Create new GrayScaleImage object to store mirroredImage
+    //Nested for-loops to go through all columns and rows
+    //Call .setPixel, giving the set column, row, and data, which is the column, minus 1, minus col (which is 0)
+    //Return the mirrored image
         public GrayscaleImage mirrored () {
 
             GrayscaleImage mirroredImage = new GrayscaleImage(this.imageData);
@@ -199,17 +183,11 @@ public class GrayscaleImage {
             return mirroredImage;
         }
 
-    /**
-     * Returns a new GrayscaleImage of size width x height, containing the part of `this`
-     * from startRow -> startRow + height, startCol -> startCol + width
-     * The original image should be unmodified
-     * @param startRow
-     * @param startCol
-     * @param width
-     * @param height
-     * @return A new GrayscaleImage containing the sub-image in the specified rectangle
-     * @throws IllegalArgumentException if the specified rectangle goes outside the bounds of the original image
-     */
+
+        //Set numRows and numCols
+        //Checks if the rectangle goes outside the bounds of the original image
+        //Create new greyscale image called croppedImage that takes in the height and width input
+        //Nested for-loop to sift through all columns and rows, calling .setPixel
     public GrayscaleImage cropped(int startRow, int startCol, int width, int height) {
         int numRows = imageData.length;
         int numCols = imageData[0].length;
@@ -228,16 +206,15 @@ public class GrayscaleImage {
         return croppedImage;
     }
 
-    /**
-     * Returns a new "centered" square image (new width == new height)
-     * For example, if the width is 20 pixels greater than the height,
-     * this should return a height x height image, with 10 pixels removed from the left and right
-     * edges of the image
-     * If the number of pixels to be removed is odd, remove 1 fewer pixel from the left or top part
-     * (note this convention should be SIMPLER/EASIER to implement than the alternative)
-     * The original image should not be changed
-     * @return a new, square, GrayscaleImage
-     */
+    //Set numRows and numCols
+    //If the image is already square, return it.
+    //Find the lowest number between numRows and numCols and store it in newSize.
+    //Create dan array of doubles called squaredImage and store the newSize in both x and y coordinates.
+    //Find the difference of numRows and newSize, divide it by 2. Same thing for numCols.
+    //Nested for-loops that iterated over all rows and columns, taking into account the removal of rows and columns
+    //from the top and left to create the square image.
+    //Return the new squaredImage.
+
     public GrayscaleImage squarified(){
         int numRows = imageData.length;
         int numCols = imageData[0].length;
