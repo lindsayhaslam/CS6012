@@ -1,13 +1,12 @@
 package assignment02;
-import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-public class LibraryBook extends Book {
+public class LibraryBookGeneric<Type> extends Book {
 
-    public String holder;
+    public Type holder;
     public GregorianCalendar dueDate;
     public Boolean isCheckedIn;
-    public LibraryBook(long isbn, String author, String title) {
+    public LibraryBookGeneric(long isbn, String author, String title) {
         super(isbn, author, title);
         holder = null;
         dueDate = null;
@@ -15,10 +14,12 @@ public class LibraryBook extends Book {
     }
 
     //Getter functions
-    public String getHolder(){
+    public Type getHolder(){
 
         return holder;
     }
+
+    //setHolder
     public GregorianCalendar getDueDate(){
 
         return dueDate;
