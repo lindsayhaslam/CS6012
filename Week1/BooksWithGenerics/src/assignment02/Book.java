@@ -1,4 +1,6 @@
+//LINDSAY HASLAM
 package assignment02;
+
 
 /**
  * Class representation of a book. The ISBN, author, and title can never change
