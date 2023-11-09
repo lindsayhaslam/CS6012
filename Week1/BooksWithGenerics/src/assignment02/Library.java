@@ -107,9 +107,13 @@ public class Library<Type> {
      * @param isbn -- ISBN of the book to be looked up
      */
     public Type lookup(long isbn) {
+        //Iterate through the library to find book
         for (LibraryBook<Type> book : library) {
+            //Checks if the ISBN matches input
             if (book.getIsbn() == isbn) {
+                //Check if the book is currently checked out
                 if (book.holder != null) {
+                    //return the holder of the book
                     return book.holder;
                 }
             }
@@ -127,10 +131,14 @@ public class Library<Type> {
      */
     public ArrayList<LibraryBook<Type>> lookup(Type holder) {
 
+        //Create a new ArrayList to store all books checked out by holder
         ArrayList<LibraryBook<Type>> holdersBooks = new ArrayList<>();
 
+        //Iterate through LibraryBook object in library
         for(LibraryBook<Type> book: library){
+            //Check if book is currently checked out and the holder matches the input
             if (book.getHolder() != null && book.getHolder().equals(holder)){
+                //Add book to holdersBook list
                 holdersBooks.add(book);
             }
         }
@@ -159,16 +167,22 @@ public class Library<Type> {
      *
      */
     public boolean checkout(long isbn, Type holder, int month, int day, int year) {
+        //Iterate through each book in the library
         for (LibraryBook<Type> book : library) {
+            //Check if the ISBN of the current book in the loop matches the provided ISBN
             if (book.getIsbn() == isbn) {
+                //Check if it's already checked out
                 if (book.holder != null) {
+                    //Checks if the book is already checked out by the same holder
                     if (book.holder.equals(holder)) {
                         return false; // Book is already checked out by the same holder
                     } else {
                         return false; // Book is already checked out by a different holder
                     }
                 } else {
+                    //Set the book's holder to provided holder
                     book.holder = holder;
+                    //Sets the book's due date to the provided date
                     book.dueDate = new GregorianCalendar(year, month, day);
                     return true;
                 }
@@ -190,12 +204,16 @@ public class Library<Type> {
      *          -- ISBN of the library book to be checked in
      */
     public boolean checkin(long isbn) {
-        //search through the library for the book
+        //search through the library for book
         for (LibraryBook<Type> book : library) {
+            //Check if the ISBN matches input
             if (book.getIsbn() == isbn) {
+                //Check if the book is currently checked out
                 if (book.holder != null) {
+                    //Set the holder and due date to null
                     book.holder = null;
                     book.dueDate = null;
+                    //Indicate successful check-in
                     return true;
                 } else {
                     return false; // Book is not checked out
@@ -217,11 +235,16 @@ public class Library<Type> {
      *          -- holder of the library books to be checked in
      */
     public boolean checkin(Type holder) {
+        //Used to indicate whether at least one book checked out by holder was found
         boolean found = false;
+        //Iterate over library to find book
         for (LibraryBook<Type> book : library) {
+            //Checks if the holder matches provided holder
             if (book.holder == holder) {
+                //Set holder and due date to null to indicate book is not checked out
                 book.holder = null;
                 book.dueDate = null;
+                //Indicate at least one book was found and checked in
                 found = true;
             }
         }
@@ -244,8 +267,11 @@ public class Library<Type> {
      * Returns the list of library books, sorted by author
      */
     public ArrayList<LibraryBook<Type>> getOrderedByAuthor() {
+        //Create a new arrayList to sore the copy of the library.
         ArrayList<LibraryBook<Type>> libraryCopy = new ArrayList<LibraryBook<Type>>();
+        //Copies all elements from the original library to libraryCopy.
         libraryCopy.addAll(library);
+        //Declare a new comparator of type OrderByAuthor
         OrderByAuthor comparator = new OrderByAuthor();
         //sorting according to the OrderByAuthor comparator
         sort(libraryCopy, comparator);
@@ -262,17 +288,25 @@ public class Library<Type> {
     //Only store the ones that are checked out, not the entire library.
     public ArrayList<LibraryBook<Type>> getOverdueList(int month, int
             day, int year) {
+        //Create a new GregorianCalendar object
         GregorianCalendar dueDate = new GregorianCalendar(year, month, day);
+        //Create a new overDueList to store overdue books
         ArrayList<LibraryBook<Type>> overDueList = new ArrayList<>();
+        //Iterate through each book in the library
         for(LibraryBook<Type> book: library) {
+            //If there is a due date
             if (book.getDueDate()!=null) {
+                //Compare input due date with the book's due date
                 int res = book.getDueDate().compareTo(dueDate);
+                //If book is overdue, add it to overDueList
                 if (res < 0) {
                     overDueList.add(book);
                 }
             }
         }
+        //Create new comparator from OrderByDueDate
         OrderByDueDate comparator=new OrderByDueDate();
+        //Sort overDueList by tehe comparator
         sort (overDueList, comparator);
         return overDueList;
     }

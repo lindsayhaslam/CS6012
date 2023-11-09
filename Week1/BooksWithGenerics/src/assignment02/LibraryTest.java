@@ -135,6 +135,9 @@ class LibraryTest {
 
         assertTrue(lib.checkin(patron2));
 
+        //isEmpty
+        assertFalse(booksCheckedOut2.isEmpty(), "Books should be checked out.");
+
     }
     @Test
     public void testOverDueBookListSmall(){
@@ -186,6 +189,8 @@ class LibraryTest {
         // Verify that the list is sorted in ascending order of due dates
         assertEquals(overdueList.get(0).getIsbn(), 4);
         assertEquals(overdueList.size(), 1);
+        //Assert that it isn't empty
+        assertFalse(overdueList.isEmpty(), "The overdue list should not be empty");
     }
     @Test
     public void testGetOverdueList() {
@@ -206,6 +211,8 @@ class LibraryTest {
         ArrayList<LibraryBook> overdueList = lib.getOverdueList(11,1,2022);
         //Check that the overdueList size is 3
         assertEquals(overdueList.size(), 3);
+        //Assert that the overdue list isn't empty
+        assertFalse(overdueList.isEmpty(), "The overdue list should not be empty");
     }
     @Test
     public void testOrderedByAuthor(){
