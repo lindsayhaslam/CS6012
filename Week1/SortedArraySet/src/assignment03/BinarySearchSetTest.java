@@ -8,63 +8,41 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class BinarySearchSetTest {
 
-//    @Test
-//    public void testGrowArray() {
-//        // Test with a small initial capacity
-//        BinarySearchSet<Integer> smallCapacitySet = new BinarySearchSet<>();
-//        smallCapacitySet.add(1);
-//        smallCapacitySet.add(2);
-//        smallCapacitySet.add(3);
-//        smallCapacitySet.growArray();
-//        assertEquals(6, smallCapacitySet.size()); // Capacity should be doubled
-//
-//        // Test with a larger initial capacity
-//        BinarySearchSet<String> largeCapacitySet = new BinarySearchSet<>(10);
-//        largeCapacitySet.add("apple");
-//        largeCapacitySet.add("banana");
-//        largeCapacitySet.growArray();
-//        assertEquals(20, largeCapacitySet.size()); // Capacity should be doubled
-//
-//        // Test with an empty set
-//        BinarySearchSet<Double> emptySet = new BinarySearchSet<>();
-//        emptySet.growArray();
-//        assertEquals(2, emptySet.size()); // Capacity should be doubled, even for an empty set
-//
-//        // Test with non-empty set
-//        BinarySearchSet<Character> nonEmptySet = new BinarySearchSet<>();
-//        nonEmptySet.add('a');
-//        nonEmptySet.add('b');
-//        nonEmptySet.growArray();
-//        assertEquals(4, nonEmptySet.size()); // Capacity should be doubled
-//
-//        // Test that the elements are preserved after growing
-//        BinarySearchSet<Integer> preservationSet = new BinarySearchSet<>(3);
-//        preservationSet.add(1);
-//        preservationSet.add(2);
-//        preservationSet.add(3);
-//        preservationSet.growArray();
-//        assertTrue(preservationSet.contains(1));
-//        assertTrue(preservationSet.contains(2));
-//        assertTrue(preservationSet.contains(3));
-//
-////        // Test that the original array is not retained
-////        BinarySearchSet<Integer> originalArraySet = new BinarySearchSet<>(3);
-////        originalArraySet.add(1);
-////        originalArraySet.add(2);
-////        originalArraySet.add(3);
-////        originalArraySet.growArray();
-////        assertNull(originalArraySet.getOriginalArray()); // Original array should be set to null
-////
-////        // Test idempotence
-////        BinarySearchSet<Integer> idempotentSet = new BinarySearchSet<>(5);
-////        idempotentSet.add(1);
-////        idempotentSet.add(2);
-////        idempotentSet.add(3);
-////        idempotentSet.growArray();
-////        int firstCapacity = idempotentSet.getCapacity();
-////        idempotentSet.growArray();
-////        assertEquals(firstCapacity * 2, idempotentSet.getCapacity()); // Capacity should be doubled again
-//    }
+    @Test
+    public void testGrowArray() {
+        BinarySearchSet<Integer> testSet = new BinarySearchSet<>();  // Specify the type explicitly
+        assertEquals(10, testSet.size());
+
+        // Add 15 elements to trigger array growth
+        for (int i = 1; i <= 15; i++) {
+            testSet.add(i);
+        }
+
+        assertEquals(20, testSet.getSet_().length);
+        assertEquals(15, testSet.size());
+
+        // Manually create the expected sorted array
+        Integer[] expectedSortedArray = new Integer[15];
+        for (int i = 1; i <= 15; i++) {
+            expectedSortedArray[i - 1] = i;
+        }
+
+        // Call growArray to trigger array growth
+        testSet.growArray();
+
+        // Get the actual array after growth without using foreach
+        Iterator<Integer> iterator = testSet.iterator();
+        Integer[] actualSortedArray = new Integer[testSet.size()];
+        int index = 0;
+        while (iterator.hasNext()) {
+            actualSortedArray[index++] = iterator.next();
+        }
+
+        // Check if elements are still in the set after growth
+        assertArrayEquals(expectedSortedArray, actualSortedArray);
+    }
+
+
 
     @Test
     public void testAdd() {
@@ -223,29 +201,28 @@ class BinarySearchSetTest {
     }
 
     @Test
-    public void testRemoveAll() {
-        BinarySearchSet<Integer> testSet = new BinarySearchSet<>();
-        testSet.add(1);
-        testSet.add(5);
-        testSet.add(2);
-        testSet.add(7);
-        testSet.add(8);
+    public void testRemoveAllWithString() {
+        BinarySearchSet<String> testSet = new BinarySearchSet<>();
+        testSet.add("apple");
+        testSet.add("banana");
+        testSet.add("orange");
+        testSet.add("grape");
 
-        Collection<Integer> elementsToRemove = new ArrayList<>();
-        elementsToRemove.add(5);
-        elementsToRemove.add(7);
+
+        Collection<String> elementsToRemove = new ArrayList<>();
+        elementsToRemove.add("orange");
+        elementsToRemove.add("grape");
 
         assertTrue(testSet.removeAll(elementsToRemove));
 
-        assertFalse(testSet.contains(5));
-        assertFalse(testSet.contains(7));
-        assertTrue(testSet.contains(1));
-        assertTrue(testSet.contains(2));
-        assertTrue(testSet.contains(8));
+        assertTrue(testSet.contains("banana"));
+        assertTrue(testSet.contains("apple"));
+        assertFalse(testSet.contains("orange"));
+        assertFalse(testSet.contains("grape"));
     }
 
     @Test
-    public void testRemoveIterator(){
+    public void testRemoveIterator() {
         BinarySearchSet<String> testRemoveIterator = new BinarySearchSet<>();
         testRemoveIterator.add("red");
         testRemoveIterator.add("orange");
@@ -253,21 +230,22 @@ class BinarySearchSetTest {
         testRemoveIterator.add("green");
         testRemoveIterator.add("blue");
 
-        assertTrue(testRemoveIterator.contains("yellow"));
+        assertTrue(testRemoveIterator.contains("yellow"));  // Corrected assertion
 
         // Get an iterator and advance it to the position of "yellow"
         Iterator<String> iterator = testRemoveIterator.iterator();
         while (iterator.hasNext()) {
-            String str = iterator.next().toString();
+            String str = iterator.next();
             System.out.println(str);
-            if (str.equals("yellow")) {
+            if (str.equals("yellow")) {  // Corrected break condition
                 break;
             }
         }
         // Call the remove method using the iterator
         iterator.remove();
+
         // Now "yellow" should be removed from the set
-        assertFalse(testRemoveIterator.contains("yellow"));
+        assertFalse(testRemoveIterator.contains("yellow"));  // Corrected assertion
     }
 
     @Test
@@ -314,5 +292,20 @@ class BinarySearchSetTest {
         } catch (IndexOutOfBoundsException e) {
             // This exception is expected
         }
+    }
+
+    @Test
+    public void testToArray() {
+        BinarySearchSet<String> testToArraySet = new BinarySearchSet<>();
+        testToArraySet.add("orange");
+        testToArraySet.add("pineapple");
+        testToArraySet.add("lemon");
+
+        testToArraySet.addAll(Arrays.asList("apple", "banana", "cherry"));
+
+        Object[] sortedArray = testToArraySet.toArray();
+
+        // Assert that the array is sorted in ascending order
+        assertArrayEquals(new Object[]{"apple", "banana", "cherry", "lemon", "orange", "pineapple"}, sortedArray);
     }
 }
