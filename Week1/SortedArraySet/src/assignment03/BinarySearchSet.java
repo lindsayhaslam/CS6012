@@ -13,14 +13,21 @@ public class BinarySearchSet<E> implements SortedSet<E>{
     private Comparator<? super E> comparator_;
 
 
-    //Default constructor
+    /**
+     * Default constructor for BinarySearchSet.
+     * Initializes the set with a default capacity of 10.
+     */
     public BinarySearchSet(){
         capacity = 10;
         set_ = (E[]) new Object[capacity];
         size = 0;
     }
 
-    //Custom constructor (takes comparator as a parameter)
+    /**
+     * Custom constructor for BinarySearchSet.
+     * Initializes the set with a default capacity of 10 and a specified comparator.
+     * @param comparator the comparator to be used for element comparison
+     */
     public BinarySearchSet(Comparator<? super E> comparator){
         comparator_ = comparator;
         capacity = 10;
@@ -28,12 +35,20 @@ public class BinarySearchSet<E> implements SortedSet<E>{
         size = 0;
     }
 
-    //Returning the comparator
+    /**
+     * Returns the comparator used for element comparison in this set.
+     * @return the comparator used for element comparison.
+     */
     @Override
     public Comparator<? super E> comparator() {
         return comparator_;
     }
 
+    /**
+     * Returns the first (smallest) element in the set.
+     * @return the first element in the set
+     * @throws NoSuchElementException if the set is empty
+     */
     @Override
     public E first() throws NoSuchElementException {
         if (isEmpty() || set_ == null) {
@@ -48,6 +63,11 @@ public class BinarySearchSet<E> implements SortedSet<E>{
         throw new NoSuchElementException("No non-null element found");
     }
 
+    /**
+     * Returns the last (largest) element in the set.
+     * @return the last element in the set
+     * @throws NoSuchElementException if the set is empty
+     */
     @Override
     public E last() throws NoSuchElementException {
         if (isEmpty()) {
@@ -56,19 +76,25 @@ public class BinarySearchSet<E> implements SortedSet<E>{
         return set_[size-1];
     }
 
+    /**
+     * Doubles the capacity of the array, copying existing elements to the new array.
+     */
     public void growArray() {
         // Dynamically allocate memory for a temporary array that is twice the size of the original.
         capacity = 2 * capacity;
-        // Copy the contents over from set to this temp array
+        // Copy the contents over from set to the temp array
         E[] tempArray = Arrays.copyOf(set_, capacity);
-        // Set = the pointer to the temp array.
+        // Set_ is the pointer to the temp array.
         set_ = tempArray;
-        // Set the pointer to the temp array to nullptr.
+        // Set the pointer to the temp array to null.
         tempArray = null;
-        // Update the size after growing the array
-        size = size(); // Update size based on the current number of elements in the set
     }
 
+    /**
+     * Performs a binary search for the specified element.
+     * @param element the element to search for
+     * @return the index of the element if found; otherwise, the insertion point with a negated value
+     */
     private int binarySearch(E element) {
         int low = 0;
         int high = size - 1;
@@ -121,6 +147,11 @@ public class BinarySearchSet<E> implements SortedSet<E>{
 //        return  -1;
 //    }
 
+    /**
+     * Adds the specified element to the set.
+     * @param element the element to add
+     * @return true if the element was added; false if the element was already present
+     */
     @Override
     public boolean add(E element) {
         boolean added = false;
@@ -140,9 +171,8 @@ public class BinarySearchSet<E> implements SortedSet<E>{
             }
             // Call binarySearch to find the insertion point
             int insertionPoint = binarySearch(element);
-            // ssign the insertion point, ternary condition
-            //By negating the value and subtracting 1, it ensures that the insertion point is
-            //distinguishable from a valid array index.
+            //Assign the insertion point, ternary condition
+            //The ternary condition converts this negative insertion point to a valid array index by negating the value and subtracting 1.
             insertionPoint = insertionPoint >= 0 ? insertionPoint : -(insertionPoint + 1);
             // Shift the elements to the right, starting from the insertion point, to make space for the new element.
             System.arraycopy(set_, insertionPoint, set_, insertionPoint + 1, size - insertionPoint);
@@ -237,15 +267,27 @@ public class BinarySearchSet<E> implements SortedSet<E>{
         private int position = -1;
         private boolean removeCalled = false;
 
+        /**
+         * Constructs an iterator for BinarySearchSet.
+         * @param set the BinarySearchSet to iterate over
+         */
         public MyIterator(BinarySearchSet<E> set) {
             this.set_ = set.getSet_();
         }
 
+        /**
+         * Checks if there are more elements in the set.
+         * @return true if there are more elements; false otherwise
+         */
         @Override
         public boolean hasNext() {
             return position + 1 < size;
         }
-
+        /**
+         * Retrieves the next element in the set.
+         * @return the next element in the set
+         * @throws NoSuchElementException if there are no more elements
+         */
         @Override
         public E next() {
             if (!hasNext()) {
@@ -258,6 +300,10 @@ public class BinarySearchSet<E> implements SortedSet<E>{
             return get(position);
         }
 
+        /**
+         * Removes the last element retrieved by the iterator from the set.
+         * @throws IllegalStateException if remove is called without a preceding or subsequent call to next()
+         */
         @Override
         public void remove() {
             if (position < 0 || position >= size || removeCalled) {
@@ -273,25 +319,35 @@ public class BinarySearchSet<E> implements SortedSet<E>{
         }
     }
 
+    /**
+     * Removes the specified element from the set.
+     * @param element the element to remove
+     * @return true if the element was removed; false if the element was not found
+     */
     @Override
     public boolean remove(E element) {
         int index = this.binarySearch(element);
 
         if (index >= 0) {
-            // Element found, remove it
+            // Shifting elements to the left
             System.arraycopy(set_, index + 1, set_, index, size - index - 1);
-            set_[--size] = null;  // Clear the last element
+            size--;
             return true;
         }
         // Element not found
         return false;
     }
 
+    /**
+     * Removes all elements in the specified collection from the set.
+     * @param elements the collection of elements to remove
+     * @return true if any elements were removed; false if no elements were removed
+     */
     @Override
     public boolean removeAll(Collection<? extends E> elements) {
         MyIterator iterator = new MyIterator(this);
 
-        // Flag to track whether any elements were removed
+        //Flag to track whether any elements were removed.
         boolean removed = false;
 
         while (iterator.hasNext()) {
@@ -299,7 +355,6 @@ public class BinarySearchSet<E> implements SortedSet<E>{
             if (elements.contains(obj)) {
                 iterator.remove();
                 removed = true;
-                continue;
             }
         }
 
@@ -309,11 +364,21 @@ public class BinarySearchSet<E> implements SortedSet<E>{
         return removed;
     }
 
+    /**
+     * Returns the size of the set.
+     * @return the size of the set
+     */
     @Override
     public int size() {
         return size;
     }
 
+
+    /**
+     * Returns an array containing all the elements in the set.
+     * The array is sorted according to the set's comparator.
+     * @return an array containing all the elements in the set
+     */
     @Override
     public E[] toArray() {
         E[] sortedArray = (E[]) new Object[size];

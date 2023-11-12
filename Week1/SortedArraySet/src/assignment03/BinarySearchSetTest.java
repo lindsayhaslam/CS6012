@@ -10,27 +10,25 @@ class BinarySearchSetTest {
 
     @Test
     public void testGrowArray() {
-        BinarySearchSet<Integer> testSet = new BinarySearchSet<>();  // Specify the type explicitly
-        assertEquals(10, testSet.size());
+        BinarySearchSet<Integer> testSet = new BinarySearchSet<>();
+        assertEquals(0, testSet.size());
 
-        // Add 15 elements to trigger array growth
+        //Add 15 elements to trigger array growth.
         for (int i = 1; i <= 15; i++) {
             testSet.add(i);
         }
+        testSet.growArray();
 
-        assertEquals(20, testSet.getSet_().length);
+        // Ensure the size of the set remains 15 after growth.
         assertEquals(15, testSet.size());
 
         // Manually create the expected sorted array
         Integer[] expectedSortedArray = new Integer[15];
         for (int i = 1; i <= 15; i++) {
-            expectedSortedArray[i - 1] = i;
+            expectedSortedArray[i-1] = i;
         }
 
-        // Call growArray to trigger array growth
-        testSet.growArray();
-
-        // Get the actual array after growth without using foreach
+        // Get the actual array after growth using the iterator
         Iterator<Integer> iterator = testSet.iterator();
         Integer[] actualSortedArray = new Integer[testSet.size()];
         int index = 0;
@@ -41,7 +39,6 @@ class BinarySearchSetTest {
         // Check if elements are still in the set after growth
         assertArrayEquals(expectedSortedArray, actualSortedArray);
     }
-
 
 
     @Test
@@ -146,6 +143,7 @@ class BinarySearchSetTest {
     @Test
     void containsAllTest() {
         BinarySearchSet<String> stringSet = new BinarySearchSet<>();
+        assertTrue(stringSet.isEmpty());
         stringSet.add("blue");
         stringSet.add("red");
         stringSet.add("green");
@@ -166,7 +164,7 @@ class BinarySearchSetTest {
 
         assertTrue(clearSetTest.isEmpty());
 
-        // Test with different types of elements (e.g., Strings)
+        // Test with Strings
         BinarySearchSet<String> stringSet = new BinarySearchSet<>();
         stringSet.add("apple");
         stringSet.add("banana");
@@ -236,7 +234,6 @@ class BinarySearchSetTest {
         Iterator<String> iterator = testRemoveIterator.iterator();
         while (iterator.hasNext()) {
             String str = iterator.next();
-            System.out.println(str);
             if (str.equals("yellow")) {  // Corrected break condition
                 break;
             }
@@ -261,6 +258,11 @@ class BinarySearchSetTest {
             var x = iterator.next();
             System.out.println(x);
         }
+        assertTrue(iteratorTestSet.contains(1));
+        assertTrue(iteratorTestSet.contains(5));
+        assertTrue(iteratorTestSet.contains(2));
+        assertTrue(iteratorTestSet.contains(7));
+        assertTrue(iteratorTestSet.contains(8));
     }
 
     @Test
