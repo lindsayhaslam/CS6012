@@ -184,6 +184,13 @@ public class BinarySearchSet<E> implements SortedSet<E>{
         return added;
     }
 
+    /**
+     * Adds all elements from the specified collection to the set.
+     * Skips duplicates (elements already in the set).
+     *
+     * @param elements the collection containing elements to be added
+     * @return true if any new elements were added; false if no new elements were added
+     */
     @Override
     public boolean addAll(Collection<? extends E> elements) {
         int originalSize = this.size();
@@ -205,20 +212,31 @@ public class BinarySearchSet<E> implements SortedSet<E>{
         return finalSize > originalSize;
     }
 
+    /**
+     * Removes all elements from the set, making it empty.
+     */
     @Override
     public void clear() {
         size = 0;
     }
 
-    //Is used in the binary search.
-    //If the return index is > 0 we know it is in the set.
+    /**
+     * Checks if the set contains the specified element using binary search.
+     *
+     * @param element the element to check for
+     * @return true if the set contains the element; false otherwise
+     */
     @Override
     public boolean contains(E element) {
         return binarySearch(element) >= 0;
     }
 
-    //Iterate through elements in collection and check if each one is in the set.
-    //If any of them are not in the set then return false.
+    /**
+     * Checks if the set contains all elements from the specified collection.
+     *
+     * @param elements the collection containing elements to check for
+     * @return true if the set contains all elements; false if any element is not in the set
+     */
     @Override
     public boolean containsAll(Collection<? extends E> elements) {
         boolean containsAll = false;
@@ -231,6 +249,11 @@ public class BinarySearchSet<E> implements SortedSet<E>{
             return containsAll;
     }
 
+    /**
+     * Checks if the set is empty.
+     *
+     * @return true if the set is empty; false if it contains elements
+     */
     @Override
     public boolean isEmpty() {
         return size == 0;
@@ -242,6 +265,13 @@ public class BinarySearchSet<E> implements SortedSet<E>{
         return new MyIterator(this);
     }
 
+    /**
+     * Returns a copy of the internal array representing the set.
+     * Throws IllegalStateException if the set is not initialized.
+     *
+     * @return a copy of the internal array representing the set.
+     * @throws IllegalStateException if the set is not initialized.
+     */
     public E[] getSet_() {
         if (set_ == null) {
             throw new IllegalStateException("The set_ is null. It should have been initialized.");
@@ -253,6 +283,14 @@ public class BinarySearchSet<E> implements SortedSet<E>{
         return newArray;
     }
 
+    /**
+     * Returns the element at the specified index in the set.
+     * Throws IndexOutOfBoundsException if the index is out of bounds.
+     *
+     * @param i the index of the element to retrieve
+     * @return the element at the specified index in the set
+     * @throws IndexOutOfBoundsException if the index is out of bounds
+     */
     public E get(int i ){
         if (i < 0 || i >= size) {
             throw new IndexOutOfBoundsException("Index " + i + " is out of bounds for BinarySearchSet");
