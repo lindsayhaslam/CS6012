@@ -415,14 +415,11 @@ public class BinarySearchSet<E> implements SortedSet<E>{
     /**
      * Returns an array containing all the elements in the set.
      * The array is sorted according to the set's comparator.
-     * @return an array containing all the elements in the set
+     * @return an array containing all the elements in the set, sorted in ascending order
      */
     @Override
     public E[] toArray() {
-        E[] sortedArray = (E[]) new Object[size];
-        System.arraycopy(set_, 0, sortedArray, 0, size);
-        // Sort the array in ascending order
-        Arrays.sort(sortedArray, comparator_);
-        return sortedArray;
+        E[] arrayCopy = Arrays.copyOf(set_, size);
+        return arrayCopy;
     }
 }
