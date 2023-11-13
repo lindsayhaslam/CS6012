@@ -234,13 +234,13 @@ class BinarySearchSetTest {
         Iterator<String> iterator = testRemoveIterator.iterator();
         while (iterator.hasNext()) {
             String str = iterator.next();
+            System.out.println(str);
             if (str.equals("yellow")) {  // Corrected break condition
                 break;
             }
         }
         // Call the remove method using the iterator
         iterator.remove();
-
         // Now "yellow" should be removed from the set
         assertFalse(testRemoveIterator.contains("yellow"));  // Corrected assertion
     }
