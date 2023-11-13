@@ -1,0 +1,17 @@
+What activities did you do as the driver? What activities did you do as the navigator?
+	 I was the driver on the first method, which was findMedian with the comparable and took in an array. I was navigator for the second method. For the tests, we switched back and forth pretty frequently.
+
+What are the advantages and disadvantages of serving in each role?
+	It is kind of scary to have someone looking at your screen and telling you what to do. It also exposes how much terminology you actually don't know.
+
+How often did you and your partner switch roles? Did you switch often enough?
+	We switched roles frequently. Especially when writing tests.
+
+Which is your preferred role and why?
+	Navigator because it's good practice with terminology and explaining how to code something instead of just doing it.
+
+Explain why this is a BAD test case for your method: assertEquals("bird", MedianSolver.median(new String[]{"bird", "cat", "dog", "ant"}))
+	First, it's missing a semi-colon. You would also want to add more to the array to find a true median, when it is only four items, the second item is the median, which isn't a true median. It also only works alphabetically, but if someone wanted these sorted by number of letters, it would be off.
+	
+Explain how you could change the test to make it "valid" and explain how you could change the specification so that this is considered a "good" test.
+	Add more to the array. Create another part of the test that organizes the words by number of letters. 
