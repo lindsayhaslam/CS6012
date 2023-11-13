@@ -414,7 +414,6 @@ public class BinarySearchSet<E> implements SortedSet<E>{
 
     /**
      * Returns an array containing all the elements in the set.
-     * The array is sorted according to the set's comparator.
      * @return an array containing all the elements in the set, sorted in ascending order
      */
     @Override
