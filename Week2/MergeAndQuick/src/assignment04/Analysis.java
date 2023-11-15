@@ -92,10 +92,10 @@ public class Analysis {
         int[] inputSizes = {100, 500, 1000, 5000};
         //Random threshold values for part 1
         int[] thresholdValues = {5, 10, 20, 50, Integer.MAX_VALUE};
-        try (FileWriter fw = new FileWriter(new File("quickSort.tsv"))) {
-
+        try(FileWriter fw = new FileWriter(new File("quickSort.tsv")))
+        {
 //        for (int threshold : thresholdValues) {
-//            long totalDuration = 0;
+//           long totalDuration = 0;
 
             for (int size : inputSizes) {
                 ArrayList<Integer> originalList = generateRandomList(size);
@@ -115,24 +115,44 @@ public class Analysis {
 //                fw.write(size + "\t" + threshold + "\t" + duration + "\n");
 
                 //***********QUICK SORT PIVOT********************
-                long startTime = System.nanoTime();
-                quicksort(inputList, Comparator.naturalOrder());
-                long endTime = System.nanoTime();
-                long duration = endTime - startTime;
+                // Test with leftIndex pivot
+                for (int i = 1; i < 4; i++) {
+                    long startTime = System.nanoTime();
+                    quicksort(inputList, Comparator.naturalOrder(), i);
+                    long endTime = System.nanoTime();
+                    long duration = endTime - startTime;
 
-                System.out.println("Size: " + size + ", Duration: " + duration + " ns");
-                fw.write(size + "\t" + duration + "\n");
+//                    totalDuration += duration;
+                    String pivotPicker = i == 1 ? "Left Index" : i == 2 ? "Random Index" : "Median Index";
+                    System.out.println(pivotPicker + ":-" + "Size: " + size + " Duration: " + duration + " ns");
+                    fw.write(pivotPicker + "\t" + size + "\t" + "\t" + duration + "\n");
+                }
+
+                // Test with medianIndex pivot
+//                startTime = System.nanoTime();
+//                quicksort(inputList, Comparator.naturalOrder(), 1);
+//                endTime = System.nanoTime();
+//                duration = endTime - startTime;
+//
+//                totalDuration += duration;
+//                System.out.println("Size: " + size + ", Duration: " + duration + " ns");
+//                fw.write(size + "\t" + "\t" + duration + "\n");
+//
+//                // Test with randomIndex pivot
+//                startTime = System.nanoTime();
+//                quicksort(inputList, Comparator.naturalOrder(), SortUtil::randomIndex);
+//                endTime = System.nanoTime();
+//                duration = endTime - startTime;
+//
+//                totalDuration += duration;
+//                System.out.println("Size: " + size + ", Threshold: " + ", Duration: " + duration + " ns");
+//                fw.write(size + "\t"  + "\t" + duration + "\n");
             }
-
         }
-    } catch(
-    IOException e)
-
-    {
-        e.printStackTrace();
+        catch(IOException e) {
+            e.printStackTrace();
+        }
     }
-
-
 
     //For testing
     private static ArrayList<Integer> generateRandomList(int size) {
