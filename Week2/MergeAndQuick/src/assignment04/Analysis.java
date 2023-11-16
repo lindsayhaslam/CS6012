@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Random;
 
-import static assignment04.SortUtil.quicksort;
+import static assignment04.SortUtil.*;
 
 public class Analysis {
 
@@ -89,17 +89,17 @@ public class Analysis {
 
     public static void main(String[] args) throws IOException {
         //Inputs
-        int[] inputSizes = {100, 500, 1000, 5000};
+        int[] inputSizes = {10, 100, 500, 1000, 5000, 7000, 10000};
         //Random threshold values for part 1
         int[] thresholdValues = {5, 10, 20, 50, Integer.MAX_VALUE};
-        try(FileWriter fw = new FileWriter(new File("quickSort.tsv")))
+        try(FileWriter fw = new FileWriter(new File("QuickvsMergeBest.tsv")))
         {
 //        for (int threshold : thresholdValues) {
 //           long totalDuration = 0;
 
             for (int size : inputSizes) {
-                ArrayList<Integer> originalList = generateRandomList(size);
-                ArrayList<Integer> inputList = copyArrayList(originalList);
+                ArrayList<Integer> worstCaseMerge = generateWorstCase(size);
+                ArrayList<Integer> inputList = copyArrayList(worstCaseMerge);
 
                 //**************MERGE THRESHOLD*****************
 //                //Get and store start time
@@ -114,39 +114,44 @@ public class Analysis {
 //                System.out.println("Size: " + size + ", Threshold: " + threshold + ", Duration: " + duration + " ns");
 //                fw.write(size + "\t" + threshold + "\t" + duration + "\n");
 
-                //***********QUICK SORT PIVOT********************
-                // Test with leftIndex pivot
-                for (int i = 1; i < 4; i++) {
-                    long startTime = System.nanoTime();
-                    quicksort(inputList, Comparator.naturalOrder(), i);
-                    long endTime = System.nanoTime();
-                    long duration = endTime - startTime;
-
+//                //***********QUICK SORT PIVOT********************
+//                for (int i = 1; i < 4; i++) {
+//                    long startTime = System.nanoTime();
+//                    quicksort(inputList, Comparator.naturalOrder(), i);
+//                    long endTime = System.nanoTime();
+//                    long duration = endTime - startTime;
+//
 //                    totalDuration += duration;
-                    String pivotPicker = i == 1 ? "Left Index" : i == 2 ? "Random Index" : "Median Index";
-                    System.out.println(pivotPicker + ":-" + "Size: " + size + " Duration: " + duration + " ns");
-                    fw.write(pivotPicker + "\t" + size + "\t" + "\t" + duration + "\n");
-                }
+//                    String pivotPicker = i == 1 ? "Left Index" : i == 2 ? "Random Index" : "Median Index";
+//                    System.out.println(pivotPicker + ":-" + "Size: " + size + " Duration: " + duration + " ns");
+//                    fw.write(pivotPicker + "\t" + size + "\t" + "\t" + duration + "\n");
+//                }
 
-                // Test with medianIndex pivot
-//                startTime = System.nanoTime();
-//                quicksort(inputList, Comparator.naturalOrder(), 1);
-//                endTime = System.nanoTime();
-//                duration = endTime - startTime;
-//
-//                totalDuration += duration;
-//                System.out.println("Size: " + size + ", Duration: " + duration + " ns");
-//                fw.write(size + "\t" + "\t" + duration + "\n");
-//
-//                // Test with randomIndex pivot
-//                startTime = System.nanoTime();
-//                quicksort(inputList, Comparator.naturalOrder(), SortUtil::randomIndex);
-//                endTime = System.nanoTime();
-//                duration = endTime - startTime;
-//
-//                totalDuration += duration;
-//                System.out.println("Size: " + size + ", Threshold: " + ", Duration: " + duration + " ns");
-//                fw.write(size + "\t"  + "\t" + duration + "\n");
+                //*************QUICK SORT VS MERGE***************
+
+                //++Merge with 20 threshold++
+                //Get and store start time
+                long startTime = System.nanoTime();
+                //Call mergesort, using the copy of the array, comparing to natural order, according to threshold.
+                mergesort(inputList, Comparator.naturalOrder(), 20);
+                //Get and store stop time
+                long endTime = System.nanoTime();
+                //Get and store duration
+                long duration = endTime - startTime;
+                fw.write("Merge: "+ "\t" + size  + "\t" + duration + "\n");
+
+                // Best case for Quick Sort
+                ArrayList<Integer> worstCaseQuick = generateWorstCase(size);
+                ArrayList<Integer> inputListQuick = copyArrayList(worstCaseQuick);
+
+                //++Quick sort with median**
+                long startTimeQuick = System.nanoTime();
+                quicksort(inputListQuick, Comparator.naturalOrder());
+                long endTimeQuick = System.nanoTime();
+                long durationQuick = endTimeQuick - startTimeQuick;
+                fw.write("Quick Sort: " + "\t" + size + "\t" + durationQuick + "\n");
+
+
             }
         }
         catch(IOException e) {

@@ -132,12 +132,12 @@ public class SortUtil {
      * @param comparator the Comparator to determine the order of elements.
      * @param <T> the type of elements in the list.
      */
-    public static <T> void quicksort(ArrayList<T> array, Comparator<? super T> comparator, int partitionFunction) {
+    public static <T> void quicksort(ArrayList<T> array, Comparator<? super T> comparator) {
         //Declare start and end of ArrayList.
         int start=0;
         int end=array.size()-1;
         //Sort according to comparator.
-        quicksort(array, start, end, comparator, partitionFunction);
+        quicksort(array, start, end, comparator);
 
     }
 
@@ -151,16 +151,16 @@ public class SortUtil {
      * @param comparator the Comparator to determine the order of elements.
      * @param <T> the type of elements in the list.
      */
-    public static <T> void quicksort(ArrayList<T> array, int startIndex, int endIndex, Comparator<? super T> comparator, int partitionFunction)
+    private static <T> void quicksort(ArrayList<T> array, int startIndex, int endIndex, Comparator<? super T> comparator)
     {
         //Verify that the start and end index have not overlapped.
         if (startIndex < endIndex) {
             //Calculate the pivotIndex using partition.
-            int pivotIndex = partition(array, startIndex, endIndex, comparator, partitionFunction);
+            int pivotIndex = partition(array, startIndex, endIndex, comparator);
             //Sort the left subarray.
-            quicksort(array, startIndex, pivotIndex, comparator, partitionFunction);
+            quicksort(array, startIndex, pivotIndex, comparator);
             //Sort the right sub-array.
-            quicksort(array, pivotIndex + 1, endIndex, comparator, partitionFunction);
+            quicksort(array, pivotIndex + 1, endIndex, comparator);
         }
     }
 
@@ -175,9 +175,9 @@ public class SortUtil {
      * @return the final index of the pivot element after partitioning.
      * @param <T> the type of elements in the list.
      */
-    public static <T> int partition(ArrayList<T> array, int startIndex, int endIndex, Comparator<? super T> comparator, int partitionFunc)
+    private static <T> int partition(ArrayList<T> array, int startIndex, int endIndex, Comparator<? super T> comparator)
     {
-        int pivotIndex = partitionFunc == 1? leftIndex(startIndex) : partitionFunc == 2 ? randomIndex(startIndex, endIndex) : medianIndex(startIndex, endIndex);
+        int pivotIndex = medianIndex(startIndex, endIndex);
         T pivotValue = array.get(pivotIndex);
         startIndex--;
         endIndex++;
