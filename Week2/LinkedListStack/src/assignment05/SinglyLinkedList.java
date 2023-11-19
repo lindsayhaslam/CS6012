@@ -10,12 +10,12 @@ public class SinglyLinkedList<E> implements List<E> {
 
     //Constructor
     public SinglyLinkedList() {
-        head = null;
+        head = new Node(null);
         size = 0;
     }
 
     public SinglyLinkedList(ArrayList<E> arr) {
-        tail = head;
+//        tail = head;
         for (var x : arr) {
             //check if LinkedList is empty
             if (head == null) {
@@ -38,6 +38,7 @@ public class SinglyLinkedList<E> implements List<E> {
 
         Node(E d) {
             value = d;
+            next = null;
         }
     }
 
@@ -106,10 +107,15 @@ public class SinglyLinkedList<E> implements List<E> {
 
         Node temp = head;
         E deletedValue = null;
+
         if (index == 0) {
-            head = temp.next;
-            //Update deleted value
             deletedValue = temp.value;
+            head = temp.next;
+
+            // If the list becomes empty, update tail to null
+            if (head == null) {
+                tail = null;
+            }
         } else {
             for (int i = 0; temp != null && i < index - 1; i++) {
                 temp = temp.next;
@@ -120,13 +126,23 @@ public class SinglyLinkedList<E> implements List<E> {
             }
 
             Node nextNode = temp.next.next;
-            //Save this.
             deletedValue = temp.next.value;
-            //Unlink deleted node from list.
             temp.next = nextNode;
+
+            // If the last element is deleted, update tail
+            if (nextNode == null) {
+                tail = temp;
+            }
         }
 
         size--;
+
+        // If the list is empty, set both head and tail to null
+        if (size == 0) {
+            head = null;
+            tail = null;
+        }
+
         return deletedValue;
     }
 
@@ -187,17 +203,16 @@ public class SinglyLinkedList<E> implements List<E> {
     class MyIterator implements Iterator<E> {
         private Node current;
         private Node previous;
-        private boolean canRemove;
+        private boolean calledNext = false;
 
-        MyIterator() {
-            this.current = head;
-            this.previous = null;
-            this.canRemove = false;
+        public MyIterator() {
+            current = head;
+            previous = null;
         }
 
         @Override
         public boolean hasNext() {
-            return current != null;
+            return current != null && current.value != null;
         }
 
         @Override
@@ -208,32 +223,46 @@ public class SinglyLinkedList<E> implements List<E> {
             E value = current.value;
             previous = current;
             current = current.next;
-            canRemove = true;
+            calledNext = true;
             return value;
         }
 
         @Override
         public void remove() {
-            if (!canRemove) {
-                throw new IllegalStateException("No more elements to iterate over");
+            if (!calledNext) {
+                throw new NoSuchElementException("No more elements to iterate over");
             }
 
             if (previous == null) {
-                //Removing the first element.
+                // Removing the first element.
                 head = head.next;
-                current = head;
-            } else {
-                //Removing a non-first element.
-                if (current != null) {
-                    previous.next = current.next;
-                    current = previous.next;
-                } else {
-                    //If there is no next element, set current to null.
-                    current = null;
+                if (head == null) {
+                    // If the list becomes empty, update tail to null.
+                    tail = null;
                 }
+                current = head;
+            } else if (current != null) {
+                // Removing a non-first element.
+                previous.next = current.next;
+                if (current.next == null) {
+                    // If the last element is removed, update tail to null.
+                    tail = previous;
+                }
+                current = current.next;
             }
-            canRemove = false;
+
+            // After removing an element, always decrement the size.
+            //FOR EXCEPTION
             --size;
+
+            // If the list is empty, set both head and tail to null.
+            if (size == 0) {
+                head = null;
+                tail = null;
+                current = null;
+            }
+
+            calledNext = false;
         }
     }
 }

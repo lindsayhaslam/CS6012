@@ -23,7 +23,7 @@ public class LinkedListStack<E> implements Stack<E> {
     @Override
     public E peek() throws NoSuchElementException {
         if (isEmpty()) {
-            throw new EmptyStackException();
+            throw new NoSuchElementException();
         }
         return stackList.getFirst();
     }
@@ -31,7 +31,7 @@ public class LinkedListStack<E> implements Stack<E> {
     @Override
     public E pop() throws NoSuchElementException {
         if (isEmpty()) {
-            throw new EmptyStackException();
+            throw new NoSuchElementException();
         }
         return stackList.deleteFirst();
     }

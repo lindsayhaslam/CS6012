@@ -47,6 +47,26 @@ class SinglyLinkedListTest {
         assertEquals(3, list.get(2));
     }
 
+    @Test
+    void insertWithStrings() {
+        //Create a SinglyLinkedList with initial elements.
+        SinglyLinkedList<String> list = new SinglyLinkedList<>();
+        //Insert at the beginning.
+        list.insert(0, "Apple");
+        //Insert at the end.
+        list.insert(1, "Banana");
+        //Insert in the middle.
+        list.insert(1, "Orange");
+
+        //Check if the size is updated.
+        assertEquals(3, list.size());
+
+        //Check if the elements are inserted at the right position.
+        assertEquals("Apple", list.get(0));
+        assertEquals("Orange", list.get(1));
+        assertEquals("Banana", list.get(2));
+    }
+
     @org.junit.jupiter.api.Test
     void getFirst() {
         SinglyLinkedList<Integer> list = new SinglyLinkedList<>(new ArrayList<>(List.of(1, 2, 3)));
@@ -162,6 +182,28 @@ class SinglyLinkedListTest {
     }
 
     @Test
+    void testIterator() {
+        SinglyLinkedList<Integer> list = new SinglyLinkedList<>();
+        ArrayList<Integer> data = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            list.insert(i, i);
+            data.add(i);
+        }
+
+        Iterator<Integer> iterator = list.iterator();
+        assertTrue(iterator.hasNext());
+
+        // Test iterator remove
+        iterator = list.iterator();
+        iterator.next();
+        iterator.remove(); // remove the first element
+
+        // Check the size after removal
+        assertEquals(data.size() - 1, list.size());
+
+    }
+
+    @Test
     void iteratorHasNext() {
         //Test when the list is not empty.
         SinglyLinkedList<Integer> list = new SinglyLinkedList<>(new ArrayList<>(List.of(1, 2, 3)));
@@ -206,6 +248,28 @@ class SinglyLinkedListTest {
         //Check the contents after removing the third element.
         assertEquals(Integer.valueOf(1), list.get(0));
     }
+    @Test
+    void iteratorRemoveNoSuchElementException() {
+        SinglyLinkedList<Integer> list = new SinglyLinkedList<>(new ArrayList<>(List.of(1, 2, 3)));
+        Iterator<Integer> iterator = list.iterator();
 
+        while (iterator.hasNext()) {
+            iterator.next();
+            iterator.remove();
+        }
 
+        assertEquals(0, list.size());
+
+        // Create a new list after removing all elements
+        list = new SinglyLinkedList<>();
+
+        // Now create a new iterator on the new list
+        Iterator<Integer> newIterator = list.iterator();
+
+        assertFalse(newIterator.hasNext());
+
+        // Ensure that calling next() or remove() on an empty iterator throws NoSuchElementException
+        assertThrows(NoSuchElementException.class, newIterator::next);
+        assertThrows(NoSuchElementException.class, newIterator::remove);
+    }
 }
