@@ -260,7 +260,7 @@ class SinglyLinkedListTest {
 
         assertEquals(0, list.size());
 
-        // Create a new list after removing all elements
+        //Create a new list after removing all elements.
         list = new SinglyLinkedList<>();
 
         // Now create a new iterator on the new list

@@ -93,7 +93,7 @@ public class SinglyLinkedList<E> implements List<E> {
             return null;
         //Store OG head in temporary node?
         Node temp = head;
-        // Move the head pointer to the next node
+        //Move the head pointer to the next node.
         head = head.next;
         size--;
         return temp.value;
@@ -251,11 +251,11 @@ public class SinglyLinkedList<E> implements List<E> {
                 current = current.next;
             }
 
-            // After removing an element, always decrement the size.
+            //After removing an element, always decrement the size.
             //FOR EXCEPTION
             --size;
 
-            // If the list is empty, set both head and tail to null.
+            //If the list is empty, set both head and tail to null.
             if (size == 0) {
                 head = null;
                 tail = null;

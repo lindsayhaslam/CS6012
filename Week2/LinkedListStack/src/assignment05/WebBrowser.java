@@ -21,7 +21,8 @@ public class WebBrowser {
 
     public void visit(URL webpage) {
         history.insertFirst(webpage);
-        forwardStack.clear();  // Clear forward history
+        //Clear forward history.
+        forwardStack.clear();
         currentWebpage_ = webpage;
     }
 
@@ -30,11 +31,11 @@ public class WebBrowser {
             throw new NoSuchElementException("No webpage history.");
         }
 
-        // Remove current web-url from history
+        //Remove current URL from history.
         currentWebpage_ = history.deleteFirst();
         forwardStack.push(currentWebpage_);
 
-        // Clear forward history if going back to the first page
+        //Clear forward history if going back to the first page.
         if (history.isEmpty()) {
             forwardStack.clear();
         }
@@ -46,13 +47,13 @@ public class WebBrowser {
                 throw new NoSuchElementException("No forward history.");
             }
 
-            // Pop the top URL from forwardStack
+            //Pop the top URL from forwardStack.
             URL forwardURL = forwardStack.pop();
 
-            // Push the current webpage to the forwardStack
+            //Push the current webpage to the forwardStack.
             forwardStack.push(currentWebpage_);
 
-            // Update the current webpage to the one from forward history
+            //Update the current webpage to the one from forward history.
             currentWebpage_ = forwardURL;
 
             return currentWebpage_;

@@ -38,15 +38,15 @@ public class WebBrowserTest {
         webBrowser.visit(webpage1);
         webBrowser.visit(webpage2);
 
-        // Go back to webpage1.
+        //Go back to webpage1.
         String result = webBrowser.back().toString();
         assertEquals("https://www.example.com", result);
 
-        // Check if the history is empty after going back to the first page.
+        //Check if the history is empty after going back to the first page.
         assertNull(webBrowser.back());
         assertTrue(webBrowser.history().isEmpty());
 
-        // Check if the forward history is cleared.
+        //Check if the forward history is cleared.
         assertTrue(webBrowser.getForwardStack().isEmpty());
     }
 
@@ -83,7 +83,7 @@ public class WebBrowserTest {
 
         SinglyLinkedList<URL> history = webBrowser.history();
 
-        // Check if the history contains the correct URLs in the correct order
+        //Check if the history contains the correct URLs in the correct order.
         assertEquals(3, history.size());
         assertEquals(webpage3, history.getFirst());
         assertEquals(webpage2, history.get(1));
