@@ -307,12 +307,12 @@ public class SinglyLinkedList<E> implements List<E> {
          * Retrieves the next element in the linked list.
          *
          * @return the value of the next element
-         * @throws NoSuchElementException if there are no more elements in the list
+         * @throws IllegalStateException if there are no more elements in the list
          */
         @Override
         public E next() {
             if (!hasNext()) {
-                throw new NoSuchElementException("No more elements exist in the list");
+                throw new IllegalStateException("No more elements exist in the list");
             }
             E value = current.value;
             previous = current;
@@ -324,12 +324,12 @@ public class SinglyLinkedList<E> implements List<E> {
         /**
          * Removes the last element returned by the iterator.
          *
-         * @throws NoSuchElementException if there are no more elements to iterate over
+         * @throws IllegalStateException if there are no more elements to iterate over
          */
         @Override
         public void remove() {
             if (!canRemove) {
-                throw new NoSuchElementException("No more elements to iterate over");
+                throw new IllegalStateException("No more elements to iterate over");
             }
             //Removing a non-first element.
             if (current != null) {

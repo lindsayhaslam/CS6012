@@ -238,7 +238,7 @@ class SinglyLinkedListTest {
     void iteratorRemoveEmptyList() {
         SinglyLinkedList<Integer> list = new SinglyLinkedList<>();
         Iterator<Integer> iterator = list.iterator();
-        assertThrows(NoSuchElementException.class, iterator::remove);
+        assertThrows(IllegalStateException.class, iterator::remove);
     }
 
     @Test
@@ -315,7 +315,7 @@ class SinglyLinkedListTest {
         assertFalse(newIterator.hasNext());
 
         // Ensure that calling next() or remove() on an empty iterator throws NoSuchElementException
-        assertThrows(NoSuchElementException.class, newIterator::next);
-        assertThrows(NoSuchElementException.class, newIterator::remove);
+        assertThrows(IllegalStateException.class, newIterator::next);
+        assertThrows(IllegalStateException.class, newIterator::remove);
     }
 }
