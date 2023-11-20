@@ -42,28 +42,28 @@ public class WebBrowser {
 
         return history.isEmpty() ? null : history.getFirst();
     }
-        public URL forward() throws NoSuchElementException {
-            if (forwardStack.isEmpty()) {
-                throw new NoSuchElementException("No forward history.");
-            }
-
-            //Pop the top URL from forwardStack.
-            URL forwardURL = forwardStack.pop();
-
-            //Push the current webpage to the forwardStack.
-            forwardStack.push(currentWebpage_);
-
-            //Update the current webpage to the one from forward history.
-            currentWebpage_ = forwardURL;
-
-            return currentWebpage_;
+    public URL forward() throws NoSuchElementException {
+        if (forwardStack.isEmpty()) {
+            throw new NoSuchElementException("No forward history.");
         }
 
-        public SinglyLinkedList<URL> history() {
-            return history;
-        }
+        //Pop the top URL from forwardStack.
+        URL forwardURL = forwardStack.pop();
+
+        //Push the current webpage to the forwardStack.
+        forwardStack.push(currentWebpage_);
+
+        //Update the current webpage to the one from forward history.
+        currentWebpage_ = forwardURL;
+
+        return currentWebpage_;
+    }
+
+    public SinglyLinkedList<URL> history() {
+        return history;
+    }
 
     public LinkedListStack<URL> getForwardStack() {
         return forwardStack;
     }
-    }
+}

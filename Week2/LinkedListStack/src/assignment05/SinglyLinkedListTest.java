@@ -249,6 +249,13 @@ class SinglyLinkedListTest {
         assertEquals(Integer.valueOf(1), list.get(0));
     }
     @Test
+    void removeSingleElement(){
+        SinglyLinkedList<Integer> list = new SinglyLinkedList<>(new ArrayList<>(List.of(1)));
+        Iterator<Integer> iterator = list.iterator();
+        iterator.remove();
+        assertEquals(0, list.size());
+    }
+    @Test
     void iteratorRemoveNoSuchElementException() {
         SinglyLinkedList<Integer> list = new SinglyLinkedList<>(new ArrayList<>(List.of(1, 2, 3)));
         Iterator<Integer> iterator = list.iterator();
