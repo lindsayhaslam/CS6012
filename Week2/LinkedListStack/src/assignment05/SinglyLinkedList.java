@@ -1,5 +1,6 @@
 package assignment05;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -18,30 +19,32 @@ public class SinglyLinkedList<E> implements List<E> {
      *
      * @param arr the ArrayList containing elements to be added to the list.
      */
-    public SinglyLinkedList(ArrayList<E> arr) {
-        tail = head;
-        for (var x : arr) {
-            //check if LinkedList is empty
-            if (head == null) {
-                //head and tail pointers need to be updated to point to the first element being added
-                head = new Node(x); // Create a new Node and assign it to head
-                tail = head; // Update tail to point to the same Node as head
-            } else {
-                tail.next = new Node(x); // Create a new Node and assign it to tail.next
-                tail = tail.next; // Update tail to point to the newly added Node
-            }
+//    public SinglyLinkedList(ArrayList<E> arr) {
+//        tail = head;
+//        for (var x : arr) {
+//            //check if LinkedList is empty
+//            if (head == null) {
+//                //head and tail pointers need to be updated to point to the first element being added
+//                head = new Node(x); // Create a new Node and assign it to head
+//                tail = head; // Update tail to point to the same Node as head
+//            } else {
+//                tail.next = new Node(x); // Create a new Node and assign it to tail.next
+//                tail = tail.next; // Update tail to point to the newly added Node
+//            }
+//
+//        }
+//        size = arr.size();
+//
+//    }
 
-        }
-        size = arr.size();
-
-    }
     /**
      * A private inner class representing a node in the singly-linked list.
      * Each node contains a value and a reference to the next node in the sequence.
      */
-    private class Node {
+    private class Node<E> {
         E value;
-        Node next;
+        Node<E> next;
+
         /**
          * Creates a new node with the specified value.
          *
@@ -53,6 +56,11 @@ public class SinglyLinkedList<E> implements List<E> {
         }
     }
 
+    Node<E> head_;
+    private Comparator<? super E> comparator_;
+    public int size_;
+
+
     /**
      * Inserts an element at the beginning of the list.
      *
@@ -60,10 +68,14 @@ public class SinglyLinkedList<E> implements List<E> {
      */
     @Override
     public void insertFirst(E element) {
-        Node newNode = new Node(element);
-        newNode.next = head;
-        head = newNode;
-
+        Node<E> newNode = new Node<>(element);
+        if (head_ == null) {
+            head = newNode;
+        } else {
+            newNode.value = element;
+            newNode.next = head_;
+            head_ = newNode;
+        }
         size++;
     }
 
@@ -76,24 +88,23 @@ public class SinglyLinkedList<E> implements List<E> {
      */
     @Override
     public void insert(int index, E element) throws IndexOutOfBoundsException {
+        if (index < 0 || index > size()) {
+            throw new IndexOutOfBoundsException("Index out of range.");
+        }
         //Check for index of 0
         if (index == 0) {
             insertFirst(element);
-            return;
-        }
-        Node newNode = new Node(element);
-        Node current = head;
-        for (int i = 0; i < index - 1; i++) {
-            current = current.next;
-        }
-        newNode.next = current.next;
-        current.next = newNode;
+        } else {
+            Node<E> current = head_;
+            for (int i = 0; i < index - 1; i++) {
+                current = current.next;
+            }
 
-        //Check if inserting at the end, updating tail.
-        if (index == size) {
-            tail = newNode;
+            Node<E> newNode = new Node<>(element);
+            newNode.next = current.next;
+            current.next = newNode;
+            size++;
         }
-        size++;
     }
 
     /**
@@ -104,7 +115,10 @@ public class SinglyLinkedList<E> implements List<E> {
      */
     @Override
     public E getFirst() throws NoSuchElementException {
-        return head.value;
+        if (head_ == null) {
+            throw new NoSuchElementException("List is empty.");
+        }
+        return head_.value;
     }
 
     /**
@@ -116,12 +130,16 @@ public class SinglyLinkedList<E> implements List<E> {
      */
     @Override
     public E get(int index) throws IndexOutOfBoundsException {
-        Node current = head;
+        if (index < 0 || index >= size()) {
+            throw new IndexOutOfBoundsException("Index is out of range.");
+        }
+        Node<E> current = head_;
         for (int i = 0; i < index; i++) {
             current = current.next;
         }
         return current.value;
     }
+
     /**
      * Removes and returns the first element in the list.
      *
@@ -130,14 +148,13 @@ public class SinglyLinkedList<E> implements List<E> {
      */
     @Override
     public E deleteFirst() throws NoSuchElementException {
-        if (head == null)
-            return null;
-        //Store OG head in temporary node.
-        Node temp = head;
-        //Move the head pointer to the next node.
-        head = head.next;
-        size--;
-        return temp.value;
+        if (head == null) {
+            throw new NoSuchElementException("List is empty.");
+        }
+        E value = head_.value;
+        head_ = head_.next;
+        size_--;
+        return value;
     }
 
     /**
@@ -149,49 +166,24 @@ public class SinglyLinkedList<E> implements List<E> {
      */
     @Override
     public E delete(int index) throws IndexOutOfBoundsException {
-        if (head == null || index < 0 || index >= size) {
-            return null;
+        if (index < 0 || index >= size()) {
+            throw new IndexOutOfBoundsException("Index is beyond list range.");
         }
-
-        Node temp = head;
-        E deletedValue = null;
-
         if (index == 0) {
-            deletedValue = temp.value;
-            head = temp.next;
-
-            // If the list becomes empty, update tail to null
-            if (head == null) {
-                tail = null;
-            }
+            return deleteFirst();
+        }
+        Node<E> current = head_;
+        for (int i = 0; i < index - 1; i++) {
+            current = current.next;
+        }
+        E data = current.next.value;
+        if (current.next.next == null) {
+            current.next = null;
         } else {
-            for (int i = 0; temp != null && i < index - 1; i++) {
-                temp = temp.next;
-            }
-
-            if (temp == null || temp.next == null) {
-                return null;
-            }
-
-            Node nextNode = temp.next.next;
-            deletedValue = temp.next.value;
-            temp.next = nextNode;
-
-            // If the last element is deleted, update tail
-            if (nextNode == null) {
-                tail = temp;
-            }
+            current.next = current.next.next;
         }
-
-        size--;
-
-        // If the list is empty, set both head and tail to null
-        if (size == 0) {
-            head = null;
-            tail = null;
-        }
-
-        return deletedValue;
+        size_--;
+        return data;
     }
 
     /**
@@ -202,18 +194,13 @@ public class SinglyLinkedList<E> implements List<E> {
      */
     @Override
     public int indexOf(E element) {
-        Node current = head;
-        int index = 0;
-
-        while (current != null) {
+        Node<E> current = head_;
+        for (int i = 0; i < size(); i++) {
             if (current.value.equals(element)) {
-                //Found in the element, return the index.
-                return index;
+                return i;
             }
             current = current.next;
-            index++;
         }
-        //Element not found.
         return -1;
     }
 
@@ -224,7 +211,7 @@ public class SinglyLinkedList<E> implements List<E> {
      */
     @Override
     public int size() {
-        return size;
+        return size_;
     }
 
     /**
@@ -243,9 +230,7 @@ public class SinglyLinkedList<E> implements List<E> {
     @Override
     public void clear() {
         head = null;
-        tail = null;
         size = 0;
-
     }
     /**
      * Returns an array containing all of the elements in the list in proper sequence.
@@ -254,10 +239,9 @@ public class SinglyLinkedList<E> implements List<E> {
      */
     @Override
     public Object[] toArray() {
-        Object[] array = new Object[size];
-        Node current = head;
+        Object[] array = new Object[size_];
+        Node<E> current = head_;
         int index = 0;
-
         while (current != null) {
             array[index++] = current.value;
             current = current.next;
@@ -276,12 +260,12 @@ public class SinglyLinkedList<E> implements List<E> {
     }
 
     class MyIterator implements Iterator<E> {
-        private Node current;
-        private Node previous;
+        private Node<E> current;
+        private Node<E> previous;
         private boolean canRemove;
 
         MyIterator() {
-            this.current = head;
+            this.current = head_;
             this.previous = null;
             this.canRemove = false;
         }
@@ -296,11 +280,11 @@ public class SinglyLinkedList<E> implements List<E> {
             if (!hasNext()) {
                 throw new NoSuchElementException("No more elements exist in the list");
             }
-            E value = current.value;
             previous = current;
+            E value = current.value;
             current = current.next;
             canRemove = true;
-            return value;
+            return previous.value;
         }
 
         @Override
@@ -309,22 +293,15 @@ public class SinglyLinkedList<E> implements List<E> {
                 throw new IllegalStateException("No more elements to iterate over");
             }
 
-            if (previous == null) {
+            if (current == head_) {
                 //Removing the first element.
-                head = head.next;
-                current = head;
+                head_ = head_.next;
+                current = head_;
             } else {
-                //Removing a non-first element.
-                if (current != null) {
-                    previous.next = current.next;
-                    current = previous.next;
-                } else {
-                    //If there is no next element, set current to null.
-                    current = null;
-                }
+                previous.next = current.next;
+                canRemove = false;
+                size_--;
             }
-            canRemove = false;
-            --size;
         }
     }
 }
