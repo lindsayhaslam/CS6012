@@ -73,10 +73,22 @@ class SinglyLinkedListTest {
         assertEquals(1, list.getFirst());
     }
 
+    @Test
+    void getFirstStrings() {
+        SinglyLinkedList<String> list = new SinglyLinkedList<>(new ArrayList<>(List.of("Apple", "Banana", "Orange")));
+        assertEquals("Apple", list.getFirst());
+    }
+
     @org.junit.jupiter.api.Test
     void get() {
         SinglyLinkedList<Integer> list = new SinglyLinkedList<>(new ArrayList<>(List.of(1, 2, 3)));
         assertEquals(2, list.get(1));
+    }
+
+    @org.junit.jupiter.api.Test
+    void getStrings() {
+        SinglyLinkedList<String> list = new SinglyLinkedList<>(new ArrayList<>(List.of("Apple", "Banana", "Orange")));
+        assertEquals("Banana", list.get(1));
     }
 
     @org.junit.jupiter.api.Test
@@ -133,6 +145,17 @@ class SinglyLinkedListTest {
     }
 
     @Test
+    void indexOfWithStrings() {
+        SinglyLinkedList<String> list = new SinglyLinkedList<>(new ArrayList<>(List.of("Apple", "Banana", "Blueberries", "Strawberries", "Kiwi")));
+        //Element 3 is at index 2.
+        assertEquals(2, list.indexOf("Blueberries"));
+        //Element 1 is at index 0.
+        assertEquals(0, list.indexOf("Apple"));
+        //Element 5 is at index 4.
+        assertEquals(4, list.indexOf("Kiwi"));
+    }
+
+    @Test
     void indexOfNotInList(){
         SinglyLinkedList<Integer> list = new SinglyLinkedList<>(new ArrayList<>(List.of(1, 2, 3, 4, 5)));
         //Check for elements not in list.
@@ -181,6 +204,14 @@ class SinglyLinkedListTest {
         assertArrayEquals(new Object[]{1, 2, 3}, array);
     }
 
+    @org.junit.jupiter.api.Test
+    void toArrayWithStrings() {
+        SinglyLinkedList<String> list = new SinglyLinkedList<>(new ArrayList<>(List.of("Red", "Blue", "Green")));
+        Object[] array = list.toArray();
+
+        assertArrayEquals(new Object[]{"Red","Blue","Green"}, array);
+    }
+
     @Test
     void testIterator() {
         SinglyLinkedList<Integer> list = new SinglyLinkedList<>();
@@ -201,6 +232,13 @@ class SinglyLinkedListTest {
         // Check the size after removal
         assertEquals(data.size() - 1, list.size());
 
+    }
+
+    @Test
+    void iteratorRemoveEmptyList() {
+        SinglyLinkedList<Integer> list = new SinglyLinkedList<>();
+        Iterator<Integer> iterator = list.iterator();
+        assertThrows(NoSuchElementException.class, iterator::remove);
     }
 
     @Test
@@ -248,35 +286,36 @@ class SinglyLinkedListTest {
         //Check the contents after removing the third element.
         assertEquals(Integer.valueOf(1), list.get(0));
     }
-//    @Test
-//    void removeSingleElement(){
-//        SinglyLinkedList<Integer> list = new SinglyLinkedList<>(new ArrayList<>(List.of(1)));
-//        Iterator<Integer> iterator = list.iterator();
-//        iterator.remove();
-//        assertEquals(0, list.size());
-//    }
-//    @Test
-//    void iteratorRemoveNoSuchElementException() {
-//        SinglyLinkedList<Integer> list = new SinglyLinkedList<>(new ArrayList<>(List.of(1, 2, 3)));
-//        Iterator<Integer> iterator = list.iterator();
-//
-//        while (iterator.hasNext()) {
-//            iterator.next();
-//            iterator.remove();
-//        }
-//
-//        assertEquals(0, list.size());
-//
-//        //Create a new list after removing all elements.
-//        list = new SinglyLinkedList<>();
-//
-//        // Now create a new iterator on the new list
-//        Iterator<Integer> newIterator = list.iterator();
-//
-//        assertFalse(newIterator.hasNext());
-//
-//        // Ensure that calling next() or remove() on an empty iterator throws NoSuchElementException
-//        assertThrows(NoSuchElementException.class, newIterator::next);
-//        assertThrows(NoSuchElementException.class, newIterator::remove);
+    @Test
+    void removeSingleElement(){
+        SinglyLinkedList<Integer> list = new SinglyLinkedList<>(new ArrayList<>(List.of(1)));
+        Iterator<Integer> iterator = list.iterator();
+        iterator.next();
+        iterator.remove();
+        assertEquals(0, list.size());
+    }
+    @Test
+    void iteratorRemoveNoSuchElementException() {
+        SinglyLinkedList<Integer> list = new SinglyLinkedList<>(new ArrayList<>(List.of(1, 2, 3)));
+        Iterator<Integer> iterator = list.iterator();
+
+        while (iterator.hasNext()) {
+            iterator.next();
+            iterator.remove();
+        }
+
+        assertEquals(0, list.size());
+
+        //Create a new list after removing all elements.
+        list = new SinglyLinkedList<>();
+
+        //Create a new iterator on the new list.
+        Iterator<Integer> newIterator = list.iterator();
+
+        assertFalse(newIterator.hasNext());
+
+        // Ensure that calling next() or remove() on an empty iterator throws NoSuchElementException
+        assertThrows(NoSuchElementException.class, newIterator::next);
+        assertThrows(NoSuchElementException.class, newIterator::remove);
     }
 }

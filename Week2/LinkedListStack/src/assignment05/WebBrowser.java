@@ -7,18 +7,29 @@ public class WebBrowser {
     private LinkedListStack<URL> forwardStack;
     URL currentWebpage_;
 
-    //First Constructor
+    /**
+     * First constructor.
+     * Represents a simple web browser with basic navigation functionality.
+     */
     public WebBrowser() {
         history = new SinglyLinkedList<>();
         forwardStack = new LinkedListStack<>();
     }
+    /**
+     * Second constructor.
+     * Constructs a new web browser with an empty history and forward stack.
+     */
 
-    //Second Constructor
     public WebBrowser(SinglyLinkedList<URL> history) {
         this.history = history;
         forwardStack = new LinkedListStack<>();
     }
 
+    /**
+     * Visits a webpage, adding it to the browsing history and clearing the forward history.
+     *
+     * @param webpage the URL of the webpage to visit
+     */
     public void visit(URL webpage) {
         history.insertFirst(webpage);
         //Clear forward history.
@@ -26,6 +37,12 @@ public class WebBrowser {
         currentWebpage_ = webpage;
     }
 
+    /**
+     * Navigates back to the previous webpage in the history.
+     *
+     * @return the URL of the previous webpage, or null if the history is empty
+     * @throws NoSuchElementException if there is no webpage history
+     */
     public URL back() throws NoSuchElementException {
         if (history.isEmpty()) {
             throw new NoSuchElementException("No webpage history.");
@@ -42,6 +59,12 @@ public class WebBrowser {
 
         return history.isEmpty() ? null : history.getFirst();
     }
+    /**
+     * Navigates forward to the next webpage in the forward history.
+     *
+     * @return the URL of the next webpage
+     * @throws NoSuchElementException if there is no forward history
+     */
     public URL forward() throws NoSuchElementException {
         if (forwardStack.isEmpty()) {
             throw new NoSuchElementException("No forward history.");
@@ -59,10 +82,20 @@ public class WebBrowser {
         return currentWebpage_;
     }
 
+    /**
+     * Gets the browsing history.
+     *
+     * @return the browsing history
+     */
     public SinglyLinkedList<URL> history() {
         return history;
     }
 
+    /**
+     * Gets the forward history stack.
+     *
+     * @return the forward history stack
+     */
     public LinkedListStack<URL> getForwardStack() {
         return forwardStack;
     }

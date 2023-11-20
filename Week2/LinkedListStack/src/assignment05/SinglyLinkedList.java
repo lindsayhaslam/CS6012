@@ -160,7 +160,7 @@ public class SinglyLinkedList<E> implements List<E> {
             deletedValue = temp.value;
             head = temp.next;
 
-            // If the list becomes empty, update tail to null
+            //If the list becomes empty, update tail to null.
             if (head == null) {
                 tail = null;
             }
@@ -177,7 +177,7 @@ public class SinglyLinkedList<E> implements List<E> {
             deletedValue = temp.next.value;
             temp.next = nextNode;
 
-            // If the last element is deleted, update tail
+            //If the last element is deleted, update tail.
             if (nextNode == null) {
                 tail = temp;
             }
@@ -275,22 +275,40 @@ public class SinglyLinkedList<E> implements List<E> {
         return new MyIterator();
     }
 
+    /**
+     * Custom iterator for traversing a singly linked list.
+     *
+     */
     class MyIterator implements Iterator<E> {
         private Node current;
         private Node previous;
         private boolean canRemove;
 
+        /**
+         * Constructs a new iterator starting at the beginning of the linked list.
+         */
         MyIterator() {
             this.current = head;
             this.previous = null;
             this.canRemove = false;
         }
 
+        /**
+         * Checks if there is another element in the linked list.
+         *
+         * @return true if there is another element, false otherwise
+         */
         @Override
         public boolean hasNext() {
             return current != null;
         }
 
+        /**
+         * Retrieves the next element in the linked list.
+         *
+         * @return the value of the next element
+         * @throws NoSuchElementException if there are no more elements in the list
+         */
         @Override
         public E next() {
             if (!hasNext()) {
@@ -303,26 +321,22 @@ public class SinglyLinkedList<E> implements List<E> {
             return value;
         }
 
+        /**
+         * Removes the last element returned by the iterator.
+         *
+         * @throws NoSuchElementException if there are no more elements to iterate over
+         */
         @Override
         public void remove() {
             if (!canRemove) {
-                throw new IllegalStateException("No more elements to iterate over");
+                throw new NoSuchElementException("No more elements to iterate over");
+            }
+            //Removing a non-first element.
+            if (current != null) {
+                previous.next = current.next;
+                current = previous;
             }
 
-            if (previous == null) {
-                //Removing the first element.
-                head = head.next;
-                current = head;
-            } else {
-                //Removing a non-first element.
-                if (current != null) {
-                    previous.next = current.next;
-                    current = previous.next;
-                } else {
-                    //If there is no next element, set current to null.
-                    current = null;
-                }
-            }
             canRemove = false;
             --size;
         }
