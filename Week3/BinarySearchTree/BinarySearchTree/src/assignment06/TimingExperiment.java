@@ -16,20 +16,21 @@ public class TimingExperiment {
         int end=5001;
         int increment=500;
 
-        //You spin me round baby, right round
+        // you spin me round baby, right round
         long startTime = System.nanoTime();
         while (System.nanoTime() - startTime < 1_000_000_000);
 
-        try (FileWriter fw = new FileWriter(new File("BSTRandomSortedOrder.tsv"), false)) {
+        try (FileWriter fw = new FileWriter(new File("BSTRandomvsSortedOrder.tsv"), false)) { // open up a file writer so we can write
+            // to file.
 
-            for (int size = beginning; size <= end; size+=increment) { //This is used as the exponent to calculate the size of the set.
+            for (int size = beginning; size <= end; size+=increment) { // This is used as the exponent to calculate the size of the set.
 //                int size = (int) Math.pow(2, exp); // or ..
 
                 //Do the experiment multiple times, and average out the results
                 long totalTime = 0;
 
                 for (int iter = 0; iter < ITER_COUNT; iter++) {
-                    // SET UP!
+                    //SET UP!
                     ArrayList<Integer> set = new ArrayList<>();
 
                     for (int i = 0; i < size; i++) {
@@ -53,21 +54,20 @@ public class TimingExperiment {
 
                 double sortedOrder = totalTime / (double) ITER_COUNT;
 
-                //Adding in random order.
+/**
+ * Adding in random order
+ */
                 totalTime=0;
 
                 ArrayList<Integer> randList = new ArrayList<>();
                 Random random = new Random();
 
                 for (int iter = 0; iter < ITER_COUNT; iter++) {
-                    // SET UP!
+                    //SET UP!
                     for (int i = 0; i < size; i++) {
                         randList.add(i);
                     }
-
-                    for(int k = 0; k < size; k++){
-                        randList.set(k, randList.get(random.nextInt(size)));
-                    }
+                    Collections.shuffle(randList);
 
                     BinarySearchTree<Integer> bst2 = new BinarySearchTree<>();
 
