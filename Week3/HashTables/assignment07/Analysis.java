@@ -24,7 +24,7 @@ public class Analysis {
         long startTime = System.nanoTime();
         while (System.nanoTime() - startTime < 1_000_000_000)
             ;
-        try (FileWriter fw = new FileWriter(new File("DictRemoveCollisionTimeFINAL.tsv"))) {
+        try (FileWriter fw = new FileWriter(new File("DictContainsCollisionTimeFINAL.tsv"))) {
 
 
             for (int exp = 8; exp <= 18; exp++) {
@@ -55,8 +55,7 @@ public class Analysis {
                 long totalTime = 0;
                 Collections.shuffle(stringsFromFile);
                 long start = System.nanoTime();
-
-                goodHashTable.removeAll(stringsFromFile);
+                goodHashTable.containsAll(stringsFromFile);
                 long stop = System.nanoTime();
                 totalTime += stop - start;
                 goodHashTime = totalTime;
@@ -64,7 +63,7 @@ public class Analysis {
                 totalTime = 0;
                 Collections.shuffle(stringsFromFile);
                 start = System.nanoTime();
-                mediocreHashTable.removeAll(stringsFromFile);
+                mediocreHashTable.containsAll(stringsFromFile);
                 stop = System.nanoTime();
                 totalTime += stop - start;
                 mediocreHashTime = totalTime;
@@ -72,7 +71,7 @@ public class Analysis {
                 totalTime = 0;
                 Collections.shuffle(stringsFromFile);
                 start = System.nanoTime();
-                badHashTable.removeAll(stringsFromFile);
+                badHashTable.containsAll(stringsFromFile);
                 stop = System.nanoTime();
                 totalTime += stop - start;
                 badHashTime = totalTime;
