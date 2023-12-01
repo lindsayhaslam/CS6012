@@ -1,8 +1,5 @@
 package assignment07;
 
-
-
-
 public class MediocreHashFunctor implements HashFunctor {
         public int hash(String item) {
             int hash = 7;

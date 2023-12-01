@@ -31,49 +31,15 @@ public class ChainingHashTable implements Set<String>{
         if (storage[index] == null) {
             storage[index] = new LinkedList<>();
         }
-        //option 1- search through the entire set
         //Block duplicates.
-        if(storage[index].contains(item)){
+        if(storage[index].contains(item)) {
             return false;
         }
-//        //option 2 - only search through list at a certain index
-//        //if there's already a list started at that index, loop through all the strings in it and check that
-//        //the string we're trying to add isn't already there
-//        for (String element : storage[index]) {
-//            if (element.equals(item)) {
-//                return false;
-//            }
-//        }
         //if it doesn't already exist add it to the storage array and increment size
         storage[index].add(item);
         size++;
-        //if the load factor is surpassed need to make a new array of linked lists that is bigger
-//        if(size / storage.length >= 2) {
-//            resize();
-//        }
         return true;
     }
-    @SuppressWarnings("unchecked")
-//    private void resize() {
-//        int newCapacity = 2 * capacity;
-//        LinkedList<String>[] newStorage = (LinkedList<String>[]) new LinkedList[newCapacity];
-//        //Iterate over storage.
-//        for (LinkedList<String> list : storage) {
-//            if (list != null) {
-//                //Iterate over list.
-//                for (String item : list) {
-//                    int index = Math.abs(functor.hash(item)) % newCapacity;
-//                    //If it is null, create new LinkedList.
-//                    if (newStorage[index] == null) {
-//                        newStorage[index] = new LinkedList<>();
-//                    }
-//                    newStorage[index].add(item);
-//                }
-//            }
-//        }
-//        storage = newStorage;
-//        capacity = newCapacity;
-//    }
     /**
      * Ensures that this set contains all items in the specified collection.
      *
@@ -101,7 +67,6 @@ public class ChainingHashTable implements Set<String>{
      */
     @Override
     public void clear() {
-        //storage = new LinkedList[capacity];
         Arrays.fill(storage, null);
         size = 0;
     }
@@ -205,6 +170,9 @@ public class ChainingHashTable implements Set<String>{
         return size;
     }
 
+    /**
+     * Helper function to return storage.
+     */
     public LinkedList<String>[] getStorage() {
         return storage;
     }
