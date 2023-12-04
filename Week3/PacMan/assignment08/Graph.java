@@ -2,12 +2,17 @@ package assignment08;
 
 import java.util.*;
 
+/**
+ * Represents a graph structure used for pathfinding in a maze.
+ */
 public class Graph {
     Node start;
     Node end;
     Node[][] nodes;
 
-    //Nested node class.
+    /**
+     * Nested Node class.
+     */
     class Node{
         //Char value of the node.
         char value;
@@ -16,7 +21,10 @@ public class Graph {
         Node cameFrom;
         List<Node> neighbors;
 
-        //Constructor for Node class.
+        /**
+         * Constructor for the Node class.
+         * @param value The character value of the node.
+         */
         public Node(char value) {
             this.value = value;
             this.visited = false;
@@ -24,7 +32,13 @@ public class Graph {
         }
     }
 
-    //Constructor for graph
+    /**
+     * Constructor for the Graph class.
+     *
+     * @param maze 2D char array representing the maze layout.
+     * @param startValue The character representing the start node in the maze.
+     * @param endValue The character representing the end node in the maze.
+     */
     public Graph(char[][] maze, char startValue, char endValue) {
         //Establish rows and columns.
         int rows = maze.length;
@@ -73,7 +87,11 @@ public class Graph {
         }
     }
 
-//Breadth First Search
+    /**
+     * Performs Breadth-First Search (BFS) on the graph to check if a path from start to end exists.
+     *
+     * @return true if a path exists, false otherwise.
+     */
 boolean breadthFirstSearch() {
     start.visited = true;
     //To keep track of nodes to be visited.
@@ -100,7 +118,9 @@ boolean breadthFirstSearch() {
     }
     return false;
 }
-
+    /**
+     * Sets the path from the end node to the start node by updating node values to '.'.
+     */
 public void setPath(){
     Node current = end;
     //Traverse the path from the end to start node.

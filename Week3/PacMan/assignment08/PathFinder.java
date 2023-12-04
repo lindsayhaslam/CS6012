@@ -8,6 +8,11 @@ public class PathFinder {
     static char[][] maze_;
     static Graph graph;
 
+    /**
+     * Solves a maze specified in the input file and writes the result to an output file.
+     * @param inputFile  The path to the input file containing the maze data.
+     * @param outputFile The path to the output file where the result will be written.
+     */
     public static void solveMaze(String inputFile, String outputFile) {
         //Read in the maze file and assign it to the array maze_.
         maze_ = readInFile(inputFile);
@@ -26,6 +31,12 @@ public class PathFinder {
         }
     }
 
+    /**
+     * Reads a maze from the specified input file and returns it as a 2D char array.
+     * @param inputFile The path to the input file containing the maze data.
+     * @return A 2D char array representing the maze read from the input file.
+     * @throws RuntimeException If the file specified by inputFile is not found.
+     */
     public static char[][] readInFile(String inputFile) {
         //To store the maze data.
         char[][] maze;
@@ -64,6 +75,11 @@ public class PathFinder {
         return maze;
     }
 
+    /**
+     * Writes the maze represented by the graph to the specified output file.
+     *
+     * @param outputFile The path to the output file where the maze will be written.
+     */
     static void writeToFile(String outputFile) {
         try (PrintWriter output = new PrintWriter(new FileWriter(outputFile))) {
             //Determine the height and width of maze_.
@@ -75,13 +91,6 @@ public class PathFinder {
             //Two for loops to iterate over each cell in maze.
             for (int i = 0; i < height; i++) {
                 for (int j = 0; j < width; j++) {
-                    //If there is a period, print out a period
-//                    if (graph.nodes[i][j].value == '.') {
-//                        output.print('.');
-//                    } else {
-//                        //Print out the original char in the maze.
-//                        output.print(maze_[i][j]);
-//                    }
                     output.print(graph.nodes[i][j].value);
                 }
                 output.println();
@@ -90,6 +99,12 @@ public class PathFinder {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Writes the content of the original file specified by outputFile to a new file.
+     * @param outputFile The path to the original file whose content will be copied.
+     * @return A File object representing the newly created file ("testOutput.txt").
+     */
 
     static File writeOriginalToFile(String outputFile) {
         File output = null;
