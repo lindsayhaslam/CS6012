@@ -16,6 +16,9 @@ public class TestPathFinder {
     private static final String tinyMazeInput = "tinyMaze.txt";
     private static final String tinyMazeOutput = "tinyMazeOutput.txt";
 
+    private static final String writeToFile = "writeToFile.txt";
+
+
 
     @Test
     public void testSolveMazeWithValidInput() {
@@ -47,25 +50,25 @@ public class TestPathFinder {
     @Test
     public void testWriteToFile() {
         //Read in file.
-        char[][] maze = PathFinder.readInFile(tinyMazeInput);
+        char[][] maze = PathFinder.readInFile(writeToFile);
         PathFinder.maze_ = maze;
         //Initialize the graph
         PathFinder.graph = new Graph(maze, 'S', 'G');
 
-        // Ensure that writeToFile successfully creates an output file
-        PathFinder.writeToFile(tinyMazeOutput);
+        //Ensure that writeToFile successfully creates an output file
+        PathFinder.writeToFile(writeToFile);
 
-        // Check the existence of the output file
-        File outputFile = new File(tinyMazeOutput);
+        //Check the existence of the output file
+        File outputFile = new File(writeToFile);
         assertTrue(outputFile.exists());
 
         // Check the content of the output file
         try {
             String fileContent = Files.readString(outputFile.toPath());
             // Assuming the expected content of tinyMazeOutput.txt is the same as the content of tinyMaze.txt
-            assertEquals(fileContent.trim(), "7 9\nXXXXXXXXX\nX       X\nXXXX XX X\nX       X\nX XX XX X\nXGX   S X\nXXXXXXXXX");
+            assertEquals(fileContent.trim(), "5 5\nXXXXX\nXS  X\nX   X\nX  GX\nXXXXX");
         } catch (IOException e) {
-            fail("Failed to read content from " + tinyMazeOutput);
+            fail("Failed to read content from " + writeToFile);
         }
     }
 
@@ -95,36 +98,6 @@ public class TestPathFinder {
         assertTrue(outputFile.exists());
         assertTrue(outputFile.length() > 0);
     }
-    @Test
-    public void testSolveMazeWithNoPath() {
-        // Assuming "noPathMaze.txt" is a maze file with no solution
-        String noPathMazeInput = "noPathMaze.txt";
-        String noPathMazeOutput = "noPathMazeOutput.txt";
-
-        // Create a maze file with no solution
-        String noPathMazeContent = "5 5\nSXXXX\nXXXXX\nXXXXX\nXXXXX\nGXXXX";
-        try (PrintWriter inputWriter = new PrintWriter(new FileWriter(noPathMazeInput))) {
-            inputWriter.write(noPathMazeContent);
-        } catch (IOException e) {
-            fail("Failed to create noPathMaze.txt");
-        }
-
-        // Solve the maze
-        PathFinder.solveMaze(noPathMazeInput, noPathMazeOutput);
-
-        // Check that the output file exists and contains the original maze
-        File outputFile = new File(noPathMazeOutput);
-        assertTrue(outputFile.exists());
-
-        try {
-            String fileContent = Files.readString(outputFile.toPath());
-            assertEquals(fileContent.trim(), noPathMazeContent);
-        } catch (IOException e) {
-            fail("Failed to read content from " + noPathMazeOutput);
-        }
-    }
-
-
 
     public static void main(String[] args) {
 

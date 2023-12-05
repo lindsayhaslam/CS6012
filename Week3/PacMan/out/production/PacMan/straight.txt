@@ -1,4 +1,4 @@
 3 10
 XXXXXXXXXX
-XS      GX
+XS......GX
 XXXXXXXXXX
