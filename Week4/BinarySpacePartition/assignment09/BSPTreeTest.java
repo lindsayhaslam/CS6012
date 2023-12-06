@@ -19,9 +19,7 @@ class BSPTreeTest {
                 count++;
                 segments.add(s);
             }
-
         }
-
     }
 
     @org.junit.jupiter.api.Test
@@ -85,11 +83,6 @@ class BSPTreeTest {
 
 
     @org.junit.jupiter.api.Test
-    void insertRec() {
-
-    }
-
-    @org.junit.jupiter.api.Test
     void traverseFarToNear() {
         // Create a BSPTree
         BSPTree bspTree = new BSPTree();
@@ -102,44 +95,45 @@ class BSPTreeTest {
         bspTree.insert(segment2);
         bspTree.insert(segment3);
 
-        // Create a CounterCallback to count the visited segments
+        //Create a CounterCallback to count the visited segments
         CounterCallback counterCallback = new CounterCallback();
 
-        // Traverse the tree and perform the callback on each segment
+        //Traverse the tree and perform the callback on each segment
         bspTree.traverseFarToNear(4.0, 5.0, counterCallback);
 
-        // Verify that the count is as expected
+        //Verify that the count is as expected
         assertEquals(3, counterCallback.count);
 
-        // Verify that the visited segments are in the correct order (far to near)
+        //Verify that the visited segments are in the correct order (far to near)
         assertNotNull(counterCallback.segments);
 
-        // Update the expectation to match the third segment
-//        assertEquals(segment3, counterCallback.segments.get(2));
+        //Update the expectation to match the third segment
+        //ASK THE TA ABOUT THIS.
+        assertEquals(segment2, counterCallback.segments.get(2));
+        assertEquals(segment1, counterCallback.segments.get(0));
+        assertEquals(segment3, counterCallback.segments.get(1));
         }
 
     @org.junit.jupiter.api.Test
     void collision() {
         BSPTree bspTree = new BSPTree();
 
-        // Insert some segments
-        Segment segment1 = new Segment(1.0, 2.0, 3.0, 4.0);
-        Segment segment2 = new Segment(2.0, 3.0, 4.0, 5.0);
-        Segment segment3 = new Segment(3.0, 4.0, 5.0, 6.0);
+        //Insert segments.
+        Segment segment1 = new Segment(0.0, 0.0, 2.0, 0.0);
+        Segment segment2 = new Segment(1.0, 1.0, 1.0, 3.0);
         bspTree.insert(segment1);
         bspTree.insert(segment2);
-        bspTree.insert(segment3);
 
-        // Create a query segment
-        Segment querySegment = new Segment(2.0, 3.0, 5.0, 6.0);
+        //Create a query segment.
+        Segment querySegment = new Segment(0.5, 0.5, 1.5, 2.5);
 
-        // Perform collision check
+        //Perform collision check.
         Segment collidedSegment = bspTree.collision(querySegment);
 
-        // Debug information
+        //Debug information.
         System.out.println("Collided segment: " + collidedSegment);
 
-        // Verify that the collided segment is as expected
+        //Verify that the collided segment is as expected.
         assertNotNull(collidedSegment);
     }
 }
