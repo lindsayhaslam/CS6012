@@ -47,8 +47,9 @@ public class BSPTree {
                 backSegments.add(splitResult[1]);
             }
         }
-        node.right = buildTree(frontSegments);
-        node.left = buildTree(backSegments);
+        node.left = buildTree(frontSegments);
+        node.right = buildTree(backSegments);
+
         return node;
     }
 
@@ -72,14 +73,6 @@ public class BSPTree {
         }
     }
 
-    /**
-     * Gets the root node of the BSP tree.
-     *
-     * @return The root node of the BSP tree.
-     */
-    public Node getRoot() {
-        return root;
-    }
 
     /**
      * Inserts a segment into the BSP tree.
@@ -106,7 +99,7 @@ public class BSPTree {
             root.right = insertRec(root.right, segment);
         } else if (side == -1){
             root.left = insertRec(root.left, segment);
-        }
+        } // TODO split segment when side == 0
         return root;
     }
 
