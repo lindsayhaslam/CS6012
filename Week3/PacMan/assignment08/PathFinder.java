@@ -51,15 +51,15 @@ public class PathFinder {
             String dimensionsLine = scanner.nextLine();
             //Split the dimensions line into an array.
             String[] dimensions = dimensionsLine.split(" ");
-            //Convert first element of dimensions array to an int
+            //Convert first element of dimensions array to an int.
             int height = Integer.parseInt(dimensions[0]);
             int width = Integer.parseInt(dimensions[1]);
 
-            //Create the maze layout
+            //Create the maze layout.
             maze = new char[height][width];
             //Iterate over each row of the maze.
             for (int i = 0; i < height; i++) {
-                //Read the next line
+                //Read the next line.
                 String line = scanner.nextLine();
                 //Iterate over each column.
                 for (int j = 0; j < width; j++) {
@@ -67,7 +67,7 @@ public class PathFinder {
                     maze[i][j] = line.charAt(j);
                 }
             }
-            //Close the scanner
+            //Close the scanner.
             scanner.close();
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
@@ -85,7 +85,7 @@ public class PathFinder {
             //Determine the height and width of maze_.
             int height = maze_.length;
             int width = maze_[0].length;
-            //write graph dimensions
+            //write graph dimensions.
             output.println(height + " " + width);
 
             //Two for loops to iterate over each cell in maze.
