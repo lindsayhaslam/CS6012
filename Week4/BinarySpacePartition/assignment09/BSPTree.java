@@ -97,9 +97,9 @@ public class BSPTree {
         int side = root.segment.whichSide(segment);
         if(side == 1){
             root.right = insertRec(root.right, segment);
-        } else if (side == -1){
+        } else if (side == -1) {
             root.left = insertRec(root.left, segment);
-        } // TODO split segment when side == 0
+        }
         return root;
     }
 
